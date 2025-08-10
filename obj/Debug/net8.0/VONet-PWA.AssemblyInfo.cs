@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VONet-PWA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+467c83b657ac25f635e27199fcceff0b7913b0ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f404b02d65cb5a5a58d122ba5546dcf07c4dd1f")]
 [assembly: System.Reflection.AssemblyProductAttribute("VONet-PWA")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VONet-PWA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
