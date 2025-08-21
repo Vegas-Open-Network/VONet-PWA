@@ -1,9 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\AdminJK\\source\\repos\\VONet-PWA\\",
+  "WorkspaceRootPath": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|c:\\users\\adminjk\\source\\repos\\vonet-pwa\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|c:\\users\\jacob kukuk\\source\\repos\\vonet-pwa\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|solutionrelative:pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|c:\\users\\jacob kukuk\\source\\repos\\vonet-pwa\\wwwroot\\manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|solutionrelative:wwwroot\\manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|c:\\users\\jacob kukuk\\source\\repos\\vonet-pwa\\wwwroot\\sw.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}|",
+      "RelativeMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|solutionrelative:wwwroot\\sw.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|c:\\users\\jacob kukuk\\source\\repos\\vonet-pwa\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{9A9EDA11-1768-43AA-8696-935AC8B39A1D}|VONet-PWA.csproj|solutionrelative:pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
@@ -14,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,19 +46,62 @@
             },
             {
               "$type": "Bookmark",
+              "Name": "ST:0:0:{0174dea2-fdbe-4ef1-8f99-c0beae78880f}"
+            },
+            {
+              "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\AdminJK\\source\\repos\\VONet-PWA\\Pages\\Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\Pages\\Index.cshtml",
               "RelativeDocumentMoniker": "Pages\\Index.cshtml",
-              "ToolTip": "C:\\Users\\AdminJK\\source\\repos\\VONet-PWA\\Pages\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\Pages\\Index.cshtml",
               "RelativeToolTip": "Pages\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-10T06:52:38.216Z",
+              "WhenOpened": "2025-08-21T05:42:07.202Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Pages\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-21T05:42:00.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "sw.js",
+              "DocumentMoniker": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\wwwroot\\sw.js",
+              "RelativeDocumentMoniker": "wwwroot\\sw.js",
+              "ToolTip": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\wwwroot\\sw.js",
+              "RelativeToolTip": "wwwroot\\sw.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-08-21T05:41:52.066Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "manifest.json",
+              "DocumentMoniker": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\wwwroot\\manifest.json",
+              "RelativeDocumentMoniker": "wwwroot\\manifest.json",
+              "ToolTip": "C:\\Users\\Jacob Kukuk\\source\\repos\\VONet-PWA\\wwwroot\\manifest.json",
+              "RelativeToolTip": "wwwroot\\manifest.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-21T05:41:50.832Z",
               "EditorCaption": ""
             }
           ]
