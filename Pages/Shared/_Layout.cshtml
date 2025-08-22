@@ -1,27 +1,202 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - VONet_PWA</title>
-    <link rel="manifest" href="~/manifest.json" />
-    <meta name="theme-color" content="#1b6ec2" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/VONet_PWA.styles.css" asp-append-version="true" />
-</head>
-<body>
-    @RenderBody()
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>@ViewData["Title"] - Vegas Open Network</title>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- PWA & Mobile App Meta Tags -->
+    <meta name="theme-color" content="#111827">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/facc15/111827?text=VON">
+    <link rel="manifest" href="~/manifest.json">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+       
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <div id="app" class="min-h-screen pb-24">
+        <header class="bg-gray-800 sticky top-0 z-40">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <h1 id="header-title" class="font-bold text-xl text-white">Vegas Open Network</h1>
+                    <div id="header-actions"></div>
+                </div>
+            </div>
+        </header>
+        <main>
+            @RenderBody()
+        </main>
+        <footer class="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 z-50">
+            <nav id="bottom-nav" class="flex justify-around items-center h-16">
+                <!-- Nav items will be injected here -->
+            </nav>
+        </footer>
+        <div id="installer-detail-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden items-end sm:items-center justify-center p-0 sm:p-4">
+            <div id="modal-content" class="bg-gray-800 rounded-t-2xl sm:rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 relative">
+                <!-- Content will be injected here -->
+            </div>
+        </div>
+    </div>
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js');
+        // --- APP STATE ---
+        let isLoggedIn = false;
+        let installRequests = [
+            { id: 'VN-8436', name: 'John Doe', email: 'john.d@example.com', phone: '702-555-1234', address: '123 Fremont St, Las Vegas, NV', notes: 'Has access to a flat roof. Best to call in the afternoon.', status: 'Request Received', date: '2025-08-20' },
+            { id: 'VN-8437', name: 'Jane Smith', email: 'jane.s@example.com', phone: '702-555-5678', address: '456 The Strip, Las Vegas, NV', notes: 'Apartment building, will need to coordinate with management.', status: 'Site Survey Scheduled', date: '2025-08-19' },
+            { id: 'VN-8438', name: 'Sam Wilson', email: 'sam.w@example.com', phone: '702-555-9012', address: '789 Arts District, Las Vegas, NV', notes: '', status: 'Installation Complete', date: '2025-08-15' },
+            { id: 'VN-8439', name: 'Maria Garcia', email: 'maria.g@example.com', phone: '702-555-3456', address: '101 Summerlin Pkwy, Las Vegas, NV', notes: 'Pitched roof, might be tricky.', status: 'Request Received', date: '2025-08-21' },
+        ];
+        const statusColors = {'Request Received': 'bg-blue-500', 'Site Survey Scheduled': 'bg-yellow-500', 'Installation Complete': 'bg-green-500', 'On Hold': 'bg-gray-500'};
+        const allStatuses = ['Request Received', 'Site Survey Scheduled', 'Installation Scheduled', 'Installation Complete', 'On Hold', 'Cancelled'];
+        const headerTitle = document.getElementById('header-title');
+        const headerActions = document.getElementById('header-actions');
+        const bottomNav = document.getElementById('bottom-nav');
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            updateUI(pageId);
+            window.scrollTo(0, 0);
+        }
+        function updateUI(activePageId) {
+            headerActions.innerHTML = '';
+            if (isLoggedIn) {
+                headerTitle.textContent = 'Install Queue';
+                const logoutButton = `<button onclick="logoutInstaller()" class="text-yellow-400 text-sm font-semibold">Logout</button>`;
+                headerActions.innerHTML = logoutButton;
+            } else {
+                const pageTitles = { home: 'Vegas Open Network', joinForm: 'New Request', installerLogin: 'Installer Login', confirmation: 'Request Sent' };
+                headerTitle.textContent = pageTitles[activePageId] || 'Vegas Open Network';
+            }
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('text-yellow-400');
+                item.classList.add('text-gray-400');
+                if (item.dataset.page === activePageId) {
+                    item.classList.add('text-yellow-400');
+                    item.classList.remove('text-gray-400');
+                }
             });
         }
+        function renderNav() {
+            bottomNav.innerHTML = '';
+            let navItems;
+            if (isLoggedIn) {
+                navItems = [ { id: 'installerDashboard', icon: 'list', label: 'Queue' } ];
+            } else {
+                navItems = [
+                    { id: 'home', icon: 'home', label: 'Home' },
+                    { id: 'joinForm', icon: 'plus-circle', label: 'Join' },
+                    { id: 'installerLogin', icon: 'shield', label: 'Portal' }
+                ];
+            }
+            navItems.forEach(item => {
+                bottomNav.innerHTML += `
+                    <button data-page="${item.id}" onclick="showPage('${item.id}')" class="nav-item flex flex-col items-center justify-center text-gray-400 w-full h-full">
+                        <i data-lucide="${item.icon}" class="h-6 w-6"></i>
+                        <span class="text-xs mt-1">${item.label}</span>
+                    </button>`;
+            });
+            lucide.createIcons();
+        }
+        function handleAddressCheck() {
+            if (!document.getElementById('address').value) return;
+            const btn = document.getElementById('check-address-btn'), text = document.getElementById('check-address-text'), spinner = document.getElementById('check-address-spinner');
+            text.classList.add('hidden'); spinner.classList.remove('hidden'); btn.disabled = true;
+            setTimeout(() => {
+                document.getElementById('address-check-step').style.display = 'none';
+                document.getElementById('install-request-step').classList.remove('hidden');
+                text.classList.remove('hidden'); spinner.classList.add('hidden'); btn.disabled = false;
+            }, 1000);
+        }
+        function submitInstallRequest() {
+            if (!document.getElementById('name').value || !document.getElementById('email').value || !document.getElementById('phone').value) return;
+            const newRequest = {
+                id: 'VN-' + (Math.floor(Math.random() * 9000) + 1000), name: document.getElementById('name').value, email: document.getElementById('email').value, phone: document.getElementById('phone').value, address: document.getElementById('address').value, notes: document.getElementById('notes').value, status: 'Request Received', date: new Date().toISOString().split('T')[0]
+            };
+            installRequests.unshift(newRequest);
+            document.getElementById('request-id').textContent = newRequest.id;
+            document.getElementById('request-status').textContent = newRequest.status;
+            document.getElementById('install-form').reset();
+            document.getElementById('address-check-step').style.display = 'block';
+            document.getElementById('install-request-step').classList.add('hidden');
+            showPage('confirmation');
+        }
+        function loginInstaller() {
+            isLoggedIn = true;
+            renderNav();
+            renderInstallQueue();
+            showPage('installerDashboard');
+        }
+        function logoutInstaller() {
+            isLoggedIn = false;
+            renderNav();
+            showPage('home');
+        }
+        function renderInstallQueue() {
+            const queueList = document.getElementById('install-queue-list');
+            queueList.innerHTML = '';
+            const sortedRequests = [...installRequests].sort((a, b) => (a.status === 'Installation Complete' ? 1 : b.status === 'Installation Complete' ? -1 : new Date(b.date) - new Date(a.date)));
+            if (sortedRequests.length === 0) {
+                queueList.innerHTML = `<div class="text-center text-gray-500 p-8">No active requests.</div>`;
+                return;
+            }
+            sortedRequests.forEach(req => {
+                queueList.innerHTML += `
+                <div class="bg-gray-800 rounded-lg flex items-center p-3 cursor-pointer" onclick="showRequestDetail('${req.id}')">
+                    <div class="w-2 h-10 rounded-full ${statusColors[req.status] || 'bg-gray-600'}"></div>
+                    <div class="flex-1 ml-4">
+                        <div class="flex justify-between items-center">
+                            <p class="font-semibold text-white">${req.name}</p>
+                            <p class="font-mono text-xs text-yellow-400">${req.id}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-1">
+                            <p class="text-sm text-gray-400">${req.status}</p>
+                            <p class="text-xs text-gray-500">${req.date}</p>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-right" class="text-gray-600 ml-2"></i>
+                </div>`;
+            });
+            lucide.createIcons();
+        }
+        function showRequestDetail(requestId) {
+            const request = installRequests.find(r => r.id === requestId); if (!request) return;
+            const modal = document.getElementById('installer-detail-modal'), modalContent = document.getElementById('modal-content');
+            const statusOptions = allStatuses.map(s => `<option value="${s}" ${request.status === s ? 'selected' : ''}>${s}</option>`).join('');
+            modalContent.innerHTML = `<button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i data-lucide="x" class="h-6 w-6"></i></button><div class="p-2"><p class="font-mono text-sm text-yellow-400">${request.id}</p><h2 class="text-2xl font-bold text-white mt-1">${request.name}</h2><div class="mt-4 space-y-3 text-gray-300"><p><i data-lucide="map-pin" class="inline-block h-4 w-4 mr-2"></i>${request.address}</p><p><i data-lucide="mail" class="inline-block h-4 w-4 mr-2"></i>${request.email}</p><p><i data-lucide="phone" class="inline-block h-4 w-4 mr-2"></i>${request.phone}</p><div class="bg-gray-900 p-3 rounded-lg"><p class="text-sm font-semibold text-gray-400">Notes:</p><p>${request.notes || 'No notes provided.'}</p></div></div><div class="mt-6"><label for="status-update" class="block text-sm font-medium text-gray-300">Update Status</label><select id="status-update" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-yellow-400 focus:border-yellow-400">${statusOptions}</select><button onclick="updateRequestStatus('${request.id}')" class="mt-3 w-full bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-300 transition-all">Save Changes</button></div></div>`;
+            lucide.createIcons();
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => modalContent.classList.add('active'), 50);
+        }
+        function closeModal() {
+            const modal = document.getElementById('installer-detail-modal'), modalContent = document.getElementById('modal-content');
+            modalContent.classList.remove('active');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+        function updateRequestStatus(requestId) {
+            const newStatus = document.getElementById('status-update').value;
+            const requestIndex = installRequests.findIndex(r => r.id === requestId);
+            if (requestIndex > -1) {
+                installRequests[requestIndex].status = newStatus;
+                renderInstallQueue(); closeModal();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNav();
+            showPage('home');
+        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
