@@ -1,15 +1,14 @@
-self.addEventListener('install', event => {
-  self.skipWaiting();
+// Skip waiting on install
+self.addEventListener('install', (event) => {
+    self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(clients.claim());
+// Take control on activate
+self.addEventListener('activate', (event) => {
+    event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
-  );
+// Always fetch from network, no cache
+self.addEventListener('fetch', (event) => {
+    event.respondWith(fetch(event.request));
 });

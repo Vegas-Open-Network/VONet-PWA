@@ -2,9 +2,13 @@
   "name": "VONet",
   "short_name": "VONet",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1b6ec2",
+  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     {
       "src": "icon-192.png",
@@ -17,5 +21,6 @@
       "type": "image/png"
     }
   ],
-  "description": "Vegas Open Network is has an official mobile app for joining and building Las Vegas's community-owned internet. Inspired by successful projects like NYC Mesh, this app is your gateway to a free, open, and resilient network built by the people, for the people."
+  "description": "Vegas Open Network has an official mobile app for joining and building Las Vegas's community-owned internet. Inspired by NYC Mesh, this app is your gateway to a free, open, and resilient network built by the people, for the people.",
+  "categories": [ "social", "communication", "utilities" ]
 }
